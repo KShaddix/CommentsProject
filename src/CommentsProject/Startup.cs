@@ -4,6 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using CommentsProject.Services;
+using CommentsProject.Services.Interfaces;
+
 namespace CommentsProject
 {
     public class Startup
@@ -19,6 +22,11 @@ namespace CommentsProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            var connectionString = Configuration.GetConnectionString("Dev");
+            services.AddSingleton<IArticleAdapter, ArticleAdapter>(provider => new ArticleAdapter(connectionString));
+            services.AddSingleton<ICommentAdapter, CommentAdapter>(provider => new CommentAdapter(connectionString));
+            services.AddSingleton<IUserAdapter, UserAdapter>(provider => new UserAdapter(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,7 +51,7 @@ namespace CommentsProject
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Articles}/{action=Index}/{id?}");
             });
         }
     }
