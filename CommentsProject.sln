@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommentsProject", "CommentsProject\CommentsProject.csproj", "{575BFCB8-4574-4231-BB9A-F86A8EEC3B0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommentsProject", "src\CommentsProject\CommentsProject.csproj", "{575BFCB8-4574-4231-BB9A-F86A8EEC3B0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommentsProject.Tests", "CommentsProject.Tests\CommentsProject.Tests.csproj", "{B5C72577-6BCF-4C19-8919-F6EBE1EF3271}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommentsProject.Tests", "tests\CommentsProject.Tests\CommentsProject.Tests.csproj", "{B5C72577-6BCF-4C19-8919-F6EBE1EF3271}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
