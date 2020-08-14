@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CommentsProject\CommentsProject.csproj" />
+    <ProjectReference Include="..\..\src\CommentsProject\CommentsProject.csproj" />
   </ItemGroup>
 
 </Project>

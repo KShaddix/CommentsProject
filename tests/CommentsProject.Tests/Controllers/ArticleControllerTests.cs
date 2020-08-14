@@ -159,18 +159,10 @@ namespace CommentsProject.Tests.Controllers
                 .Setup(ca => ca.GetById(1))
                 .Returns(Task.FromResult(new Entities.User { Id = 1 }));
 
-            var createCommentRequest = new CreateCommentRequest
-            {
-                Text = "Test",
-                ArticleId = 1,
-                UserId = 1,
-                ParentId = null
-            };
-
             var controller = new ArticleController(articleAdapterMock.Object, commentAdapterMock.Object, userAdapterMock.Object);
 
             // Act
-            var actual = await controller.Index(createCommentRequest);
+            var actual = await controller.Index("Test", 1, 1, null);
 
             // Assert
             var view = Assert.IsType<ViewResult>(actual);
@@ -184,18 +176,10 @@ namespace CommentsProject.Tests.Controllers
         public async void IndexPost_Article_DoesntExist()
         {
             // Arrange
-            var createCommentRequest = new CreateCommentRequest
-            {
-                Text = "Test",
-                ArticleId = 0,
-                UserId = 1,
-                ParentId = null
-            };
-
             var controller = new ArticleController(null, null, null);
 
             // Act
-            var actual = await controller.Index(createCommentRequest);
+            var actual = await controller.Index("Test", 0, 1, null);
 
             // Assert
             var view = Assert.IsType<ViewResult>(actual);
@@ -207,18 +191,10 @@ namespace CommentsProject.Tests.Controllers
         public async void IndexPost_User_DoesntExist()
         {
             // Arrange
-            var createCommentRequest = new CreateCommentRequest
-            {
-                Text = "Test",
-                ArticleId = 1,
-                UserId = 0,
-                ParentId = null
-            };
-
             var controller = new ArticleController(null, null, null);
 
             // Act
-            var actual = await controller.Index(createCommentRequest);
+            var actual = await controller.Index("Test", 1, 0, null);
 
             // Assert
             var view = Assert.IsType<ViewResult>(actual);
@@ -230,18 +206,10 @@ namespace CommentsProject.Tests.Controllers
         public async void IndexPost_Comment_DoesntExist()
         {
             // Arrange
-            var createCommentRequest = new CreateCommentRequest
-            {
-                Text = "Test",
-                ArticleId = 1,
-                UserId = 1,
-                ParentId = 0
-            };
-
             var controller = new ArticleController(null, null, null);
 
             // Act
-            var actual = await controller.Index(createCommentRequest);
+            var actual = await controller.Index("Test", 1, 1, 0);
 
             // Assert
             var view = Assert.IsType<ViewResult>(actual);
@@ -263,18 +231,10 @@ namespace CommentsProject.Tests.Controllers
                 .Setup(ca => ca.GetById(1))
                 .Throws(new AdapterException(StatusCodes.Status404NotFound, "Данный пользователь не найден"));
 
-            var createCommentRequest = new CreateCommentRequest
-            {
-                Text = "Test",
-                ArticleId = 1,
-                UserId = 1,
-                ParentId = null
-            };
-
             var controller = new ArticleController(articleAdapterMock.Object, null, userAdapterMock.Object);
 
             // Act
-            var actual = await controller.Index(createCommentRequest);
+            var actual = await controller.Index("Test", 1, 1, null);
 
             // Assert
             var view = Assert.IsType<ViewResult>(actual);
@@ -301,18 +261,10 @@ namespace CommentsProject.Tests.Controllers
                 .Setup(ca => ca.GetById(1))
                 .Returns(Task.FromResult(new Entities.User { Id = 1 }));
 
-            var createCommentRequest = new CreateCommentRequest
-            {
-                Text = "Test",
-                ArticleId = 1,
-                UserId = 1,
-                ParentId = 1
-            };
-
             var controller = new ArticleController(articleAdapterMock.Object, commentAdapterMock.Object, userAdapterMock.Object);
 
             // Act
-            var actual = await controller.Index(createCommentRequest);
+            var actual = await controller.Index("Test", 1, 1, 1);
 
             // Assert
             var view = Assert.IsType<ViewResult>(actual);
