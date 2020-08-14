@@ -40,7 +40,7 @@ namespace CommentsProject.Services
 
             using (var db = new SqlConnection(_connectionString))
             {
-                int allAmount = (await db.QueryAsync<int>($"EXEC GetArticlesCount")).Single();
+                int allAmount = (await db.QueryAsync<int>("EXEC GetArticlesCount")).Single();
                 filteredModels.MaxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
 
                 if (filteredModels.MaxPage == 0)

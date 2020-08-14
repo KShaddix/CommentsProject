@@ -45,18 +45,26 @@ namespace CommentsProject.Controllers
             return await ShowArticlePage(id, page);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Index([FromBody] CreateCommentRequest createCommentRequest)
+        [HttpPost("{articleId}")]
+        public async Task<IActionResult> Index(string text, int articleId, int userId, int? parentId)
         {
+            text = text?.Trim();
+
             try
             {
-                if (createCommentRequest.ArticleId < 1)
+                if (string.IsNullOrEmpty(text))
+                    throw new Exception("Сообщение комментария не может быть пустым");
+
+                if (text.Length > 200)
+                    throw new Exception("Длина комментария не должно превышать 200 символов");
+
+                if (articleId < 1)
                     throw new Exception("Данная статья не существует");
 
-                if (createCommentRequest.UserId < 1)
+                if (userId < 1)
                     throw new Exception("Данный пользователь не существует");
 
-                if (createCommentRequest.ParentId < 1)
+                if (parentId < 1)
                     throw new Exception("Комментарий, под которым было оставлено сообщение, не найден");
             }
             catch (Exception ex)
@@ -69,7 +77,7 @@ namespace CommentsProject.Controllers
 
             try
             {
-                await _userAdapter.GetById(createCommentRequest.UserId);
+                await _userAdapter.GetById(userId);
             }
             catch (AdapterException ex)
             {
@@ -80,11 +88,11 @@ namespace CommentsProject.Controllers
             }
 
             // Check parent comment if ParentId isn't null
-            if (createCommentRequest.ParentId != null)
+            if (parentId != null)
             {
                 try
                 {
-                    await _commentAdapter.GetCommentById(createCommentRequest.ParentId.Value);
+                    await _commentAdapter.GetCommentById(parentId.Value);
                 }
                 catch (AdapterException)
                 {
@@ -98,13 +106,13 @@ namespace CommentsProject.Controllers
 
             await _commentAdapter.Create(new Entities.Comment
             {
-                Text = createCommentRequest.Text,
-                ArticleId = createCommentRequest.ArticleId,
-                UserId = createCommentRequest.UserId,
-                ParentId = createCommentRequest.ParentId
+                Text = text,
+                ArticleId = articleId,
+                UserId = userId,
+                ParentId = parentId
             });
 
-            return await ShowArticlePage(createCommentRequest.ArticleId, 1);
+            return await ShowArticlePage(articleId, 1);
         }
 
         private async Task<IActionResult> ShowArticlePage(int id, int page)

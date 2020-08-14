@@ -43,7 +43,7 @@ namespace CommentsProject.Services
 
             using (var db = new SqlConnection(_connectionString))
             {
-                int allAmount = (await db.QueryAsync<int>($"EXEC GetCommentsCount")).Single();
+                int allAmount = (await db.QueryAsync<int>($"EXEC GetCommentsCountForArticle {articleId}")).Single();
                 filteredModels.MaxPage = (allAmount % count == 0) ? allAmount / count : allAmount / count + 1;
 
                 if (filteredModels.MaxPage == 0)
@@ -83,10 +83,11 @@ namespace CommentsProject.Services
         public async Task<Comment> Create(Comment comment)
         {
             int id;
+            string parentId = (comment.ParentId == null) ? "null" : comment.ParentId.ToString();
 
             using (var db = new SqlConnection(_connectionString))
             {
-                id = (await db.QueryAsync<int>($"EXEC CreateComment {comment.Text}, {comment.ArticleId} {comment.UserId} {comment.ParentId}")).Single();
+                id = (await db.QueryAsync<int>($"EXEC CreateComment '{comment.Text}', {comment.ArticleId}, {comment.UserId}, {parentId}")).Single();
             }
 
             return new Comment
